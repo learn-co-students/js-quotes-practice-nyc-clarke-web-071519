@@ -11,6 +11,15 @@
 </head>
 <body class='container center'>
   <h1>My favorite quotes:</h1>
+  <h4>Sort by:</h4>
+  <div id="sort-quotes" class="btn-group btn-group-toggle" data-toggle="buttons">
+    <label class="btn btn-secondary active" id="sort-by-id">
+      <input type="radio" name="options"  autocomplete="off" checked> ID
+    </label>
+    <label class="btn btn-secondary" id="sort-by-author">
+      <input type="radio" name="options"  autocomplete="off"> Author
+    </label>
+  </div>
   <div>
     <ul id="quote-list">
     </ul>

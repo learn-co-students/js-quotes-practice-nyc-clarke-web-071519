@@ -1,9 +1,11 @@
 // It might be a good idea to add event listener to make sure this file 
 // only runs after the DOM has finshed loading. 
 
-const ulQuoteList = document.querySelector('ul#quote-list')
-const newQuoteForm = document.getElementById('new-quote-form')
-const editFormSubmitButton = document.querySelector('div.modal-footer>button.btn-primary')
+const ulQuoteList = document.querySelector('ul#quote-list');
+const newQuoteForm = document.getElementById('new-quote-form');
+const editFormSubmitButton = document.querySelector('div.modal-footer>button.btn-primary');
+const quoteSortButtonsDiv = document.getElementById('sort-quotes')
+let quoteListArray = [];
 
 // Sample structure of a quote card <li>
 {/* <li class='quote-card'>
@@ -75,8 +77,9 @@ function displayquote(quoteObject) {
 document.addEventListener('DOMContentLoaded',function() {
     fetch('http://localhost:3000/quotes?_embed=likes')
         .then(response => response.json() )
-        .then(quoteListArray => {
-            let sortedQuotesListArray = quoteListArray.sort((a, b) => (a.id > b.id) ? 1 : -1);
+        .then(quoteList => {
+            quoteListArray = quoteList
+            let sortedQuotesListArray = quoteList.sort((a, b) => (a.id > b.id) ? 1 : -1);
             
             sortedQuotesListArray.forEach(quoteObject => displayquote(quoteObject) )
         });
@@ -180,3 +183,20 @@ editFormSubmitButton.addEventListener('click', function() {
 
 })
 
+quoteSortButtonsDiv.addEventListener('click', function(event){
+    if (event.target.id === "sort-by-id") {
+        while (ulQuoteList.children.length > 0) {
+            ulQuoteList.removeChild(ulQuoteList.lastChild)
+        };
+        let quotesListArraySortedById = quoteListArray;
+        quotesListArraySortedById.sort((a, b) => (a.id > b.id) ? 1 : -1);
+        quotesListArraySortedById.forEach(quoteObject => displayquote(quoteObject) );
+    } else if (event.target.id === "sort-by-author") {
+        while (ulQuoteList.children.length > 0) {
+            ulQuoteList.removeChild(ulQuoteList.lastChild)
+        };
+        let quotesListArraySortedByAuthor = quoteListArray;
+        quotesListArraySortedByAuthor.sort((a, b) => (a.author > b.author) ? 1 : -1);
+        quotesListArraySortedByAuthor.forEach(quoteObject => displayquote(quoteObject) );
+    }
+})
